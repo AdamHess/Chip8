@@ -1,25 +1,19 @@
-import binascii
 import sys
 from os.path import exists
+from chip import Chip
 
 
 def main():
     filename = sys.argv[1]
     if not exists(filename):
         raise Exception("file not found")
-    for b in read_file_byte(filename):
-        print(binascii.hexlify(b), end='')
+    c = Chip(read_file_byte(filename))
+    c.dump_ram()
 
 
 def read_file_byte(filename):
     with open(filename, 'rb') as file:
-        byte = file.read(1)
-        while True:
-            byte = file.read(1)
-            if byte:
-                yield byte
-            else:
-                break
+        return file.read()
 
 
 if __name__ == "__main__":
